@@ -2,5 +2,14 @@
 @plugin "daisyui";
 
 @plugin "daisyui" {
-  themes: light --default, cyberpunk --prefersdark;
+  themes: all;
+}
+html, body {
+  overflow: auto;
+  scrollbar-width: none; /* Firefox */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
 }

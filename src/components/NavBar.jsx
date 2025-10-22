@@ -3,7 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { removeUser } from "../store/userSlice";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
+import ThemeChanger from "./ThemeChanger";
+import { clearRequests } from "../store/requestSlice";
+import { clearFeeds } from "../store/feedSlice";
+import { clearConnections } from "../store/connectionSlice";
 
 function NavBar() {
   const user = useSelector((store) => store.userReducer.user);
@@ -12,57 +16,79 @@ function NavBar() {
 
   const handleLogOut = async () => {
     try {
-      const response = await axios.post(BASE_URL + "/logout");
-      dispatch(removeUser());
+      const response = await axios.post(
+        BASE_URL + "/logout",
+        {},
+        { withCredentials: true }
+      );
       alert(response.data.message);
       navigate("/login");
+      dispatch(removeUser());
+      dispatch(clearFeeds());
+      dispatch(clearRequests());
+      dispatch(clearConnections());
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <div className="navbar bg-base-300 shadow-sm">
+    <div className="navbar bg-base-300 shadow-sm flex flex-wrap px-4 md:px-8">
       <div className="flex-1">
-        <a className="btn btn-ghost text-xl">🧑‍💻 GitTogether</a>
+        <Link to={"/"} className="btn btn-ghost text-lg md:text-xl">
+          🧑‍💻 GitTogether
+        </Link>
       </div>
+
       {user && (
-        <div className="flex gap-2">
-          <div className="dropdown dropdown-end mx-5">
+        <div className="flex items-center gap-2 md:gap-4 flex-wrap md:flex-nowrap">
+          <div className="mx-2 my-2 hidden sm:block">
+            <h1 className="text-ghost text-lg  md:text-lg text-center sm:text-left">
+              Welcome, <a className="text-primary"> {user?.firstName}</a>
+            </h1>
+          </div>
+
+          <div className="dropdown dropdown-end mx-2 md:mx-5">
             <div
               tabIndex={0}
               role="button"
               className="btn btn-ghost btn-circle avatar"
             >
-              <div className="w-10 rounded-full">
+              <div className="w-10 md:w-16 lg:w-20 rounded-full">
                 <img
-                  alt="Tailwind CSS Navbar component"
+                  alt="User Avatar"
                   src={user?.profileUrl}
+                  className="object-cover"
                 />
               </div>
             </div>
 
             <ul
-              tabIndex="-1"
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+              tabIndex={-1}
+              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-44 sm:w-52 p-2 shadow"
             >
-              <div className="mx-2 my-2">
-                <h1 className="text-lg text-primary ">
-                  Welcome, {user?.firstName}
-                </h1>
-              </div>
-
               <li>
-                <a className="justify-between">
+                <Link to={"/profile"} className="justify-between">
                   Profile
                   <span className="badge">New</span>
-                </a>
+                </Link>
               </li>
               <li>
-                <a>Settings</a>
+                <Link to={"/connections"}>Connections</Link>
               </li>
               <li>
-                <a onClick={handleLogOut}>Logout</a>
+                <Link to={"/feeds"}>Feeds</Link>
+              </li>
+              <li>
+                <Link to={"/requests"}>Requests</Link>
+              </li>
+              <li>
+                <Link className="text-error" onClick={handleLogOut}>
+                  Logout
+                </Link>
+              </li>
+              <li>
+                <ThemeChanger />
               </li>
             </ul>
           </div>
