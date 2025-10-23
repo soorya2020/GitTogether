@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import NavBar from "./NavBar";
-import { Outlet, Route, Routes, useNavigate } from "react-router";
+import { Outlet, Route, Routes, useLocation, useNavigate } from "react-router";
 import Footer from "./Footer";
 import SpeedDial from "./SpeedDial";
 import Tabs from "./Tabs";
@@ -13,6 +13,10 @@ import { useDispatch, useSelector } from "react-redux";
 const BodyLayout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  console.log(location.pathname == "/", "mu location");
+
   const user = useSelector((store) => store.userReducer.user);
 
   const fetchUser = async () => {
@@ -46,10 +50,15 @@ const BodyLayout = () => {
         <Outlet />
       </main>
 
-      <SpeedDial />
+      <div
+        className={`${
+          location.pathname === "/" ? "hidden" : "hidden sm:block"
+        }`}
+      >
+        <SpeedDial />
+      </div>
       <div className="w-full">
-
-      <Tabs />
+        <Tabs />
       </div>
 
       <Footer />

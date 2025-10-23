@@ -4,7 +4,7 @@ const Tabs = () => {
   return (
     <div
       role="tablist"
-      className="  tabs w-full bg-base-200 justify-around  sm:hidden"
+      className="  tabs w-full bg-base-200 justify-around fixed bottom-0  sm:hidden"
     >
       <a
         role="tab"

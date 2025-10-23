@@ -3,7 +3,7 @@ import { Link } from "react-router";
 
 const SpeedDial = () => {
   return (
-    <div className="fab hidden sm:block mb-20">
+    <div className="fab mb-25 ">
       {/* a focusable div with tabIndex is necessary to work on all browsers. role="button" is necessary for accessibility */}
       <div
         tabIndex={0}
