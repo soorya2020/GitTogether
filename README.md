@@ -18,4 +18,3 @@ If you are developing a production application, we recommend using TypeScript wi
 
 
 
-ssh -i "gittogether-secret.pem" ubuntu@ec2-16-16-159-53.eu-north-1.compute.amazonaws.com
