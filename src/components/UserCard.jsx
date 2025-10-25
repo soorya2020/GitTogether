@@ -1,6 +1,11 @@
 import React from "react";
+import Loader from "./Loader";
 
-const UserCard = ({ user, handleClick }) => {
+const UserCard = ({ user, handleClick = () => {}, loading }) => {
+  const ignoredLoading =
+    loading?.status === "ignored" ? loading.loading : false;
+  const interestedLoading =
+    loading?.status === "interested" ? loading.loading : false;
   const { _id, firstName, lastName, about, skills, age, gender, profileUrl } =
     user;
   return (
@@ -19,16 +24,16 @@ const UserCard = ({ user, handleClick }) => {
 
         <div className="card-actions justify-between mt-5">
           <button
-            className="btn bg-error"
+            className="btn bg-error w-28"
             onClick={() => handleClick("ignored", _id)}
           >
-            Ignore
+            {ignoredLoading ? <Loader /> : "Ignore"}
           </button>
           <button
-            className="btn btn-accent"
+            className="btn btn-accent w-28"
             onClick={() => handleClick("interested", _id)}
           >
-            Interested
+            {interestedLoading ? <Loader /> : "Interested"}
           </button>
         </div>
       </div>

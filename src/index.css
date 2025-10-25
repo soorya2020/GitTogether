@@ -1,10 +1,15 @@
 @import "tailwindcss";
-@plugin "daisyui";
+
+/* @plugin "daisyui" {
+   themes: light --default, dark --prefersdark, bumblebee;
+ } */
 
 @plugin "daisyui" {
-  themes: all;
+  themes: bumblebee --default;
 }
-html, body {
+
+html,
+body {
   overflow: auto;
   scrollbar-width: none; /* Firefox */
 }

@@ -88,7 +88,7 @@ function NavBar() {
                 </Link>
               </li>
               <li>
-                <ThemeChanger />
+                {/* <ThemeChanger /> */}
               </li>
             </ul>
           </div>

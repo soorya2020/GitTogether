@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { addFeeds, removeUserFromFeeds } from "../store/feedSlice";
@@ -8,6 +8,7 @@ import EmptyState from "./EmptyState";
 
 function Feed() {
   const feeds = useSelector((store) => store.feedsReducer.feeds);
+  const [loading, setLoading] = useState({ status: "", loading: false });
 
   const dispatch = useDispatch();
 
@@ -28,13 +29,17 @@ function Feed() {
 
   const handleStatusChange = async (status, userId) => {
     try {
+      setLoading({ status: status, loading: true });
       const response = await axios.post(
         BASE_URL + "/request/send/" + status + "/" + userId,
         {},
         { withCredentials: true }
       );
+      setLoading({ status: status, loading: false });
+
       dispatch(removeUserFromFeeds(userId));
     } catch (error) {
+      setLoading({ status: status, loading: false });
       console.log(error);
     }
   };
@@ -60,7 +65,11 @@ function Feed() {
           Your Feeds
         </h1>
 
-        <UserCard user={feeds[0]} handleClick={handleStatusChange} />
+        <UserCard
+          user={feeds[0]}
+          handleClick={handleStatusChange}
+          loading={loading}
+        />
       </div>
     )
   );
