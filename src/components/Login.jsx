@@ -1,6 +1,6 @@
 import axios from "axios";
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../store/userSlice";
 import { Link, useNavigate } from "react-router";
 import { BASE_URL } from "../utils/constants";
@@ -14,6 +14,14 @@ const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
   const disptch = useDispatch();
   const navigate = useNavigate();
+  const user = useSelector((store) => store.userReducer.user);
+
+  useEffect(() => {
+    //cannot access login if user already exist
+    if (user) {
+      navigate("/feeds");
+    }
+  }, [user]);
 
   const handleAuth = async () => {
     try {

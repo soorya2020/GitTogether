@@ -10,6 +10,7 @@ import EditProfile from "./components/EditProfile.jsx";
 import Connections from "./components/Connections.jsx";
 import Requests from "./components/Requests.jsx";
 import Home from "./components/Home.jsx";
+import Subscription from "./components/Subscription.jsx";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
               <Route path="/profile" element={<EditProfile />} />
               <Route path="/connections" element={<Connections />} />
               <Route path="/requests" element={<Requests />} />
+              <Route path="/subscription" element={<Subscription />} />
             </Route>
           </Routes>
         </BrowserRouter>

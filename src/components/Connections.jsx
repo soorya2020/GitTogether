@@ -10,6 +10,7 @@ import Loading from "./Loading";
 
 const Connections = () => {
   const { connections } = useSelector((store) => store.connectionsReducer);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

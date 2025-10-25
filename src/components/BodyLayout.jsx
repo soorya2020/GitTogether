@@ -50,13 +50,13 @@ const BodyLayout = () => {
         <Outlet />
       </main>
 
-      <div
+      {/* <div
         className={`${
           location.pathname === "/" ? "hidden" : "hidden sm:block"
         }`}
       >
         <SpeedDial />
-      </div>
+      </div> */}
       <div className="w-full">
         <Tabs />
       </div>

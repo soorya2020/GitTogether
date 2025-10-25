@@ -24,16 +24,16 @@ const UserCard = ({ user, handleClick = () => {}, loading }) => {
 
         <div className="card-actions justify-between mt-5">
           <button
-            className="btn bg-error w-28"
+            className="btn btn-outline btn-error w-28"
             onClick={() => handleClick("ignored", _id)}
           >
-            {ignoredLoading ? <Loader /> : "Ignore"}
+            {ignoredLoading ? <Loader /> : "Reject"}
           </button>
           <button
-            className="btn btn-accent w-28"
+            className="btn btn-outline btn-info w-28"
             onClick={() => handleClick("interested", _id)}
           >
-            {interestedLoading ? <Loader /> : "Interested"}
+            {interestedLoading ? <Loader /> : "Commit"}
           </button>
         </div>
       </div>
