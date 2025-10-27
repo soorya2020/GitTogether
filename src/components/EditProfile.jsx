@@ -69,7 +69,7 @@ const EditProfile = () => {
             </div>
           </div>
         )}
-        <div className="flex justify-center my-10 gap-10">
+        <div className="flex flex-col lg:flex-row justify-center items-start lg:items-center gap-10 mt-5 mb-15">
           <div className="card w-96 bg-base-200 shadow-sm ">
             <div className="card-body ">
               {/* <span className="badge badge-xs badge-warning">Most Popular</span> */}

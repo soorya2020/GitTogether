@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addFeeds, removeUserFromFeeds } from "../store/feedSlice";
 import UserCard from "../components/UserCard";
 import EmptyState from "./EmptyState";
+import About from "./About";
 
 function Feed() {
   const feeds = useSelector((store) => store.feedsReducer.feeds);
@@ -64,6 +65,8 @@ function Feed() {
         <h1 className="p-4 pb-2 text-lg  opacity-60 tracking-wide">
           Your Feeds
         </h1>
+
+        <About />
 
         <UserCard
           user={feeds[0]}

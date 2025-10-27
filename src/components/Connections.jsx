@@ -10,6 +10,7 @@ import Loading from "./Loading";
 
 const Connections = () => {
   const { connections } = useSelector((store) => store.connectionsReducer);
+  console.log(connections);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -25,11 +26,11 @@ const Connections = () => {
     }
   };
 
-  const handleButtonClick = (value) => {
+  const handleButtonClick = (value, id) => {
+    console.log(value, id);
     if (value === "chat") {
-      navigate("/chat");
+      navigate("/chat/" + id);
     }
-    console.log(value);
   };
   useEffect(() => {
     if (!connections) {
@@ -62,6 +63,7 @@ const Connections = () => {
           connections.map((connection, index) => (
             <ConnectionList
               key={connection._id}
+              id={connection._id}
               index={index}
               {...connection}
               handleClick={handleButtonClick}

@@ -1,9 +1,42 @@
 import { useNavigate } from "react-router";
-import { BASE_URL, SUBSCRIPTION_PLANS } from "../utils/constants";
+import { BASE_URL, SUBSCRIPTION_PLANS } from "../../utils/constants";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import PremiumPage from "./PremiumPage";
 
 const Subscription = () => {
   const navigate = useNavigate();
+  const user = useSelector((store) => store.userReducer.user);
+
+  console.log(user);
+
+  const [error, setError] = useState(false);
+  const [isPremium, setIsPremium] = useState(user?.isPremium || false);
+
+  useEffect(() => {
+    verifyPremiumUser();
+  }, []);
+
+  const verifyPremiumUser = async () => {
+    console.log("premium user api");
+
+    try {
+      const response = await axios.get(BASE_URL + "/payment/verify", {
+        withCredentials: true,
+      });
+      if (response.data.isPremium) {
+        setIsPremium(true);
+        console.log("user subscribed");
+      } else {
+        setIsPremium(false);
+        setError(true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleSubscriptionClick = async (memberShipType) => {
     console.log(memberShipType);
 
@@ -16,7 +49,7 @@ const Subscription = () => {
         { memberShipType },
         { withCredentials: true }
       );
-      console.log(response);
+
       const { amount, id, key, currency } = response.data.order;
       const { firstName, lastName, email } = response.data.user;
       var options = {
@@ -42,18 +75,18 @@ const Subscription = () => {
         theme: {
           color: "#5599cc",
         },
+        handler: verifyPremiumUser,
       };
 
       console.log("rzp1");
       var rzp1 = new Razorpay(options);
 
       rzp1.open();
-
-      console.log(response);
     } catch (error) {
       console.error(error.message);
     }
   };
+  if (isPremium) return <PremiumPage />;
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-base-200 px-6 py-10">
       <h2 className="text-4xl font-bold mb-4 text-center">Choose Your Plan</h2>

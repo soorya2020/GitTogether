@@ -10,7 +10,8 @@ import EditProfile from "./components/EditProfile.jsx";
 import Connections from "./components/Connections.jsx";
 import Requests from "./components/Requests.jsx";
 import Home from "./components/Home.jsx";
-import Subscription from "./components/Subscription.jsx";
+import Subscription from "./components/Subscription";
+import Chat from "./components/Chat/Chat.jsx";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
               <Route path="/connections" element={<Connections />} />
               <Route path="/requests" element={<Requests />} />
               <Route path="/subscription" element={<Subscription />} />
+              <Route path="/chat/:toUserId" element={<Chat />} />
             </Route>
           </Routes>
         </BrowserRouter>

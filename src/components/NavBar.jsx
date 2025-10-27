@@ -112,27 +112,48 @@ function NavBar() {
 
             <ul
               tabIndex={-1}
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-44 sm:w-52 p-2 shadow"
+              className="menu sm:gap-2 menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-44 sm:w-52 p-2 shadow"
             >
               <li>
-                <Link to="/profile" className="justify-between">
-                  Profile <span className="badge">New</span>
+                <Link
+                  to="/profile"
+                  className=" justify-between btn btn-ghost bg-base-200"
+                >
+                  Profile
+                  {/* <span className="badge">New</span> */}
                 </Link>
               </li>
               <li>
-                <Link to="/connections">Connections</Link>
+                <Link
+                  className="justify-between btn btn-ghost"
+                  to="/connections"
+                >
+                  Connections
+                </Link>
               </li>
               <li>
-                <Link to="/feeds">Feeds</Link>
+                <Link className="justify-between btn btn-ghost" to="/feeds">
+                  Feeds
+                </Link>
               </li>
               <li>
-                <Link to="/requests">Requests</Link>
+                <Link className=" justify-between btn btn-ghost" to="/requests">
+                  Requests
+                </Link>
               </li>
               <li>
-                <Link to="/subscription">Subscription</Link>
+                <Link
+                  className=" justify-between btn btn-ghost"
+                  to="/subscription"
+                >
+                  Subscription
+                </Link>
               </li>
               <li>
-                <Link className="text-error" onClick={handleLogOut}>
+                <Link
+                  className=" btn btn-ghost  bg-red-300 "
+                  onClick={handleLogOut}
+                >
                   Logout
                 </Link>
               </li>
