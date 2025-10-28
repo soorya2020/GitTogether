@@ -8,6 +8,7 @@ import PremiumPage from "./PremiumPage";
 const Subscription = () => {
   const navigate = useNavigate();
   const user = useSelector((store) => store.userReducer.user);
+  const { isPremium: premiumUser } = user;
 
   const [error, setError] = useState(false);
   const [isPremium, setIsPremium] = useState(user?.isPremium || false);
@@ -78,7 +79,8 @@ const Subscription = () => {
       console.error(error.message);
     }
   };
-  if (isPremium) return <PremiumPage />;
+  
+  if (isPremium || premiumUser) return <PremiumPage />;
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-base-200 px-6 py-10">
       <h2 className="text-4xl font-bold mb-4 text-center">Choose Your Plan</h2>

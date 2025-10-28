@@ -5,6 +5,7 @@ import { addRequests, removeConnection } from "../store/requestSlice";
 import { BASE_URL } from "../utils/constants";
 import ConnectionList from "./ConnectionList";
 import EmptyState from "./EmptyState";
+import Loading from "./Loading";
 
 const Requests = () => {
   const dispatch = useDispatch();
@@ -35,7 +36,7 @@ const Requests = () => {
       getRequests();
     }
   }, []);
-  if (!requests) return <>someting went wrong</>;
+  if (!requests) return <Loading />;
   if (requests.length === 0)
     return (
       <EmptyState

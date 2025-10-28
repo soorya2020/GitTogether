@@ -31,10 +31,8 @@ const Connections = () => {
     }
   };
   useEffect(() => {
-    if (!connections) {
-      getConnections();
-    }
-  }, [connections]);
+    getConnections();
+  }, []);
 
   if (!connections) return <Loading />;
 
