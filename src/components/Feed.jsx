@@ -24,7 +24,7 @@ function Feed() {
 
       dispatch(addFeeds(response.data.data));
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -41,7 +41,7 @@ function Feed() {
       dispatch(removeUserFromFeeds(userId));
     } catch (error) {
       setLoading({ status: status, loading: false });
-      console.log(error);
+      console.error(error);
     }
   };
 

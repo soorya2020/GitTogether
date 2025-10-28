@@ -9,8 +9,6 @@ const Subscription = () => {
   const navigate = useNavigate();
   const user = useSelector((store) => store.userReducer.user);
 
-  console.log(user);
-
   const [error, setError] = useState(false);
   const [isPremium, setIsPremium] = useState(user?.isPremium || false);
 
@@ -19,27 +17,22 @@ const Subscription = () => {
   }, []);
 
   const verifyPremiumUser = async () => {
-    console.log("premium user api");
-
     try {
       const response = await axios.get(BASE_URL + "/payment/verify", {
         withCredentials: true,
       });
       if (response.data.isPremium) {
         setIsPremium(true);
-        console.log("user subscribed");
       } else {
         setIsPremium(false);
         setError(true);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
   const handleSubscriptionClick = async (memberShipType) => {
-    console.log(memberShipType);
-
     if (memberShipType === "free") {
       navigate("/feeds");
     }
@@ -78,7 +71,6 @@ const Subscription = () => {
         handler: verifyPremiumUser,
       };
 
-      console.log("rzp1");
       var rzp1 = new Razorpay(options);
 
       rzp1.open();

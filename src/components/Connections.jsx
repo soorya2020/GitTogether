@@ -10,7 +10,6 @@ import Loading from "./Loading";
 
 const Connections = () => {
   const { connections } = useSelector((store) => store.connectionsReducer);
-  console.log(connections);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -22,12 +21,11 @@ const Connections = () => {
       });
       dispatch(addConnections(response.data.data));
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
   const handleButtonClick = (value, id) => {
-    console.log(value, id);
     if (value === "chat") {
       navigate("/chat/" + id);
     }
@@ -36,7 +34,7 @@ const Connections = () => {
     if (!connections) {
       getConnections();
     }
-  }, []);
+  }, [connections]);
 
   if (!connections) return <Loading />;
 

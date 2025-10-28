@@ -17,7 +17,7 @@ const Requests = () => {
       });
       dispatch(addRequests(response.data.data));
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -28,7 +28,6 @@ const Requests = () => {
       { withCredentials: true }
     );
     dispatch(removeConnection(connectionRequestId));
-    console.log(status, connectionRequestId, response);
   };
 
   useEffect(() => {

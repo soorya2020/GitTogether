@@ -10,6 +10,7 @@ import { clearConnections } from "../store/connectionSlice";
 
 function NavBar() {
   const user = useSelector((store) => store.userReducer.user);
+  const { isPremium } = user || "";
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -27,7 +28,7 @@ function NavBar() {
       dispatch(clearRequests());
       dispatch(clearConnections());
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -147,6 +148,15 @@ function NavBar() {
                   to="/subscription"
                 >
                   Subscription
+                  <span
+                    className={`badge badge-sm font-semibold text-xs px-3 py-2 ${
+                      isPremium
+                        ? "hidden"
+                        : "badge-warning text-base-100 shadow-sm"
+                    }`}
+                  >
+                    {!isPremium && "Buy"}
+                  </span>
                 </Link>
               </li>
               <li>

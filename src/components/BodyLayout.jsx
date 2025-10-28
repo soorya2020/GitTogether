@@ -15,8 +15,6 @@ const BodyLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  console.log(location.pathname == "/", "mu location");
-
   const user = useSelector((store) => store.userReducer.user);
 
   const fetchUser = async () => {
@@ -33,7 +31,7 @@ const BodyLayout = () => {
         dispatch(removeUser());
       }
 
-      console.log(error);
+      console.error(error);
     }
   };
 

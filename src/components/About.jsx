@@ -7,8 +7,6 @@ const About = () => {
     // Check if user has already seen the modal
     const hasSeenModal = localStorage.getItem("developerAboutModal");
     if (!hasSeenModal) {
-      console.log("entering not");
-
       setIsOpen(true);
       localStorage.setItem("developerAboutModal", "true");
     }
@@ -17,14 +15,14 @@ const About = () => {
   return (
     <>
       {/* Button to reopen modal if closed */}
-      {!isOpen && (
+      {/* {!isOpen && (
         <button
           className="btn btn-sm btn-outline fixed bottom-3 z-50"
           onClick={() => setIsOpen(true)}
         >
           About GitTogether
         </button>
-      )}
+      )} */}
 
       {/* DaisyUI Modal */}
       {isOpen && (
