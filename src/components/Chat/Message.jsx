@@ -4,20 +4,15 @@ import { useSelector } from "react-redux";
 const Message = ({ messages }) => {
   const { _id: currentUserId } =
     useSelector((store) => store?.userReducer?.user) || "";
-  console.log();
 
   return (
     <div>
       {messages.map((message, index) => {
-        console.log(
-          message.senderId.toString() === currentUserId ? "end" : "start"
-        );
-
         return (
           <div key={index} className="flex-1  p-1">
             <div
-              className={`chat chat-${
-                message.senderId.toString() === currentUserId ? "end" : "start"
+              className={`chat ${
+                message.senderId === currentUserId ? "chat-end" : "chat-start"
               }`}
             >
               <div className="chat-header">
@@ -37,6 +32,10 @@ const Message = ({ messages }) => {
           </div>
         );
       })}
+      {/* Hidden element to prevent purge */}
+      <div className="hidden">
+        chat-start chat-end chat-bubble chat-bubble-primary
+      </div>
     </div>
   );
 };
