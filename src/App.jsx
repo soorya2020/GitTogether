@@ -12,26 +12,29 @@ import Requests from "./components/Requests.jsx";
 import Home from "./components/Home.jsx";
 import Subscription from "./components/Subscription";
 import Chat from "./components/Chat/Chat.jsx";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 function App() {
   return (
     <>
-      <Provider store={store}>
-        <BrowserRouter>
-          <Routes>
-            <Route index element={<Home />} />
-            <Route element={<BodyLayout />}>
-              <Route path="/login" element={<Login />} />
-              <Route path="/feeds" element={<Feed />} />
-              <Route path="/profile" element={<EditProfile />} />
-              <Route path="/connections" element={<Connections />} />
-              <Route path="/requests" element={<Requests />} />
-              <Route path="/subscription" element={<Subscription />} />
-              <Route path="/chat/:toUserId" element={<Chat />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </Provider>
+      <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+        <Provider store={store}>
+          <BrowserRouter>
+            <Routes>
+              <Route index element={<Home />} />
+              <Route element={<BodyLayout />}>
+                <Route path="/login" element={<Login />} />
+                <Route path="/feeds" element={<Feed />} />
+                <Route path="/profile" element={<EditProfile />} />
+                <Route path="/connections" element={<Connections />} />
+                <Route path="/requests" element={<Requests />} />
+                <Route path="/subscription" element={<Subscription />} />
+                <Route path="/chat/:toUserId" element={<Chat />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </Provider>
+      </GoogleOAuthProvider>
     </>
   );
 }

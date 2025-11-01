@@ -15,6 +15,8 @@ const BodyLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const hideTabs = location.pathname === "/" || location.pathname === "/login";
+
   const user = useSelector((store) => store.userReducer.user);
 
   const fetchUser = async () => {
@@ -44,20 +46,16 @@ const BodyLayout = () => {
       <NavBar />
 
       {/* Main content area grows to fill available space */}
-      <main className="flex-grow ">
+      <div className="flex-grow  bg-base-300">
         <Outlet />
-      </main>
-
-      {/* <div
-        className={`${
-          location.pathname === "/" ? "hidden" : "hidden sm:block"
-        }`}
-      >
-        <SpeedDial />
-      </div> */}
-      <div className="w-full">
-        <Tabs />
       </div>
+
+      {/* Tabs visible only on mobile and hidden on '/' or '/login' */}
+      {!hideTabs && (
+        <div className="w-full sm:hidden">
+          <Tabs />
+        </div>
+      )}
 
       <Footer />
     </div>

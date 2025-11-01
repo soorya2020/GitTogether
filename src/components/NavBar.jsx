@@ -42,51 +42,53 @@ function NavBar() {
       </div>
 
       {/* CENTER: Navigation Links */}
-      <div className="hidden md:flex flex-1 justify-center gap-4">
-        <NavLink
-          to="/connections"
-          className={({ isActive }) =>
-            `btn btn-ghost text-sm md:text-base transition-colors ${
-              isActive ? "text-secondary font-semibold" : ""
-            }`
-          }
-        >
-          Connections
-        </NavLink>
+      {user && (
+        <div className="hidden md:flex flex-1 justify-center gap-4">
+          <NavLink
+            to="/connections"
+            className={({ isActive }) =>
+              `btn btn-ghost text-sm md:text-base transition-colors ${
+                isActive ? "text-secondary font-semibold" : ""
+              }`
+            }
+          >
+            Connections
+          </NavLink>
 
-        <NavLink
-          to="/feeds"
-          className={({ isActive }) =>
-            `btn btn-ghost text-sm md:text-base transition-colors ${
-              isActive ? "text-secondary font-semibold" : ""
-            }`
-          }
-        >
-          Feeds
-        </NavLink>
+          <NavLink
+            to="/feeds"
+            className={({ isActive }) =>
+              `btn btn-ghost text-sm md:text-base transition-colors ${
+                isActive ? "text-secondary font-semibold" : ""
+              }`
+            }
+          >
+            Feeds
+          </NavLink>
 
-        <NavLink
-          to="/requests"
-          className={({ isActive }) =>
-            `btn btn-ghost text-sm md:text-base transition-colors ${
-              isActive ? "text-secondary font-semibold" : ""
-            }`
-          }
-        >
-          Requests
-        </NavLink>
+          <NavLink
+            to="/requests"
+            className={({ isActive }) =>
+              `btn btn-ghost text-sm md:text-base transition-colors ${
+                isActive ? "text-secondary font-semibold" : ""
+              }`
+            }
+          >
+            Requests
+          </NavLink>
 
-        <NavLink
-          to="/subscription"
-          className={({ isActive }) =>
-            `btn btn-ghost text-sm md:text-base transition-colors ${
-              isActive ? "text-secondary font-semibold" : ""
-            }`
-          }
-        >
-          Subscription
-        </NavLink>
-      </div>
+          <NavLink
+            to="/subscription"
+            className={({ isActive }) =>
+              `btn btn-ghost text-sm md:text-base transition-colors ${
+                isActive ? "text-secondary font-semibold" : ""
+              }`
+            }
+          >
+            Subscription
+          </NavLink>
+        </div>
+      )}
 
       {/* RIGHT: User Section */}
       {user && (

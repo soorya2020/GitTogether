@@ -12,7 +12,10 @@ const UserCard = ({ user, handleClick = () => {}, loading }) => {
     <div key={user?._id} className="card bg-base-200 w-96 shadow-sm  ">
       <figure className="h-100 w-full overflow-hidden">
         <img
-          src={profileUrl || "https://via.placeholder.com/150"}
+          src={
+            profileUrl.replace(/=s\d+-c/, "=s0-c") ||
+            "https://via.placeholder.com/150"
+          }
           alt="Shoes"
           className="h-full w-full object-cover object-center"
         />

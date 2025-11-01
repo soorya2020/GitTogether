@@ -122,7 +122,7 @@ const Chat = () => {
           ref={chatContainerRef}
           className="flex-1 overflow-y-auto no-scrollbar "
         >
-          <Message messages={messages || []} />
+          <Message messages={messages || []} currentUserId={userId} />
         </div>
 
         {/* Input Area */}

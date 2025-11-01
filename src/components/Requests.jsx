@@ -50,15 +50,15 @@ const Requests = () => {
     );
   return (
     <div className="flex justify-center">
-      <ul className="w-full md:w-2/3 lg:w-1/2 bg-base-100 rounded-box shadow-md">
+      <ul className="w-full  bg-base-300 md:w-2/3 lg:w-1/2 bg-base-100 rounded-box shadow-md">
         <div className="flex justify-center">
-          <li className="p-4 pb-2 text-lg  opacity-60 tracking-wide">
+          <li className="p-4 pb-2 text-lg  font-semibold opacity-80 tracking-wide">
             Requests
           </li>
         </div>
         {requests.map((request, index) => {
           return (
-            <div key={request._id}>
+            <div className="mt-5 overflow-hidden"  key={request._id}>
               <ConnectionList
                 id={request._id}
                 index={index}

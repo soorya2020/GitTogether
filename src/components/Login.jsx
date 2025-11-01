@@ -4,10 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../store/userSlice";
 import { Link, useNavigate } from "react-router";
 import { BASE_URL } from "../utils/constants";
+import GoogleButton from "./GoogleButton";
+
+import { GoogleLogin } from "@react-oauth/google";
+import { useGoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
-  const [email, setEmail] = useState("achu@gmail.com");
-  const [password, setPassword] = useState("Achu@123");
+  const [email, setEmail] = useState("demouser@gmail.com");
+  const [password, setPassword] = useState("Demo@123");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [error, setError] = useState("");
@@ -21,7 +25,7 @@ const Login = () => {
     if (user) {
       navigate("/feeds");
     }
-  }, [user]);
+  }, []);
 
   const handleAuth = async () => {
     try {
@@ -50,8 +54,32 @@ const Login = () => {
       setError(error?.response?.data || "400 error");
     }
   };
+
+  const handleGoogleLogin = async (credentialResponse) => {
+    try {
+      const { credential } = credentialResponse;
+      // Send credential (ID token) to your backend
+      const res = await axios.post(
+        BASE_URL + "/auth/google-login",
+        { credential },
+        { withCredentials: true }
+      );
+      navigate("/profile");
+      console.log("my user data", res.data.user);
+
+      disptch(addUser(res.data.user));
+      console.log("User logged in:", res.data.user);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
-    <div className="flex justify-center mt-15">
+    <div
+      className={`flex justify-center  ${
+        isLogin ? "mt-30" : "mt-15"
+      } sm:mt-15 scale-85  sm:scale-90 `}
+    >
       <div className="card w-96 bg-base-200 shadow-sm ">
         <div className="card-body ">
           {/* <span className="badge badge-xs badge-warning">Most Popular</span> */}
@@ -101,14 +129,46 @@ const Login = () => {
               <p className="text-error">{error}</p>
             </fieldset>
           </div>
-          <a onClick={() => setIsLogin(!isLogin)}>
-            {isLogin ? "signup" : "login"}
-          </a>
+          <p className="text-sm text-gray-500">
+            {isLogin ? (
+              <>
+                New here?{" "}
+                <a
+                  onClick={() => setIsLogin(false)}
+                  className="text-blue-500 hover:underline cursor-pointer"
+                >
+                  Sign up
+                </a>
+              </>
+            ) : (
+              <>
+                Already a user?{" "}
+                <a
+                  onClick={() => setIsLogin(true)}
+                  className="text-blue-500 hover:underline cursor-pointer"
+                >
+                  Log in
+                </a>
+              </>
+            )}
+          </p>
 
           <div className="mt-6">
             <button className="btn btn-primary btn-block" onClick={handleAuth}>
               {isLogin ? "Login" : "Sign Up"}
             </button>
+
+            <div className="mt-6 ">
+              <GoogleLogin
+                onSuccess={handleGoogleLogin}
+                onError={() => console.log("Google login failed")}
+                width="100%"
+              />
+            </div>
+
+            {/* <div onClick={googleLogin}>
+              <GoogleButton />
+            </div> */}
           </div>
         </div>
       </div>

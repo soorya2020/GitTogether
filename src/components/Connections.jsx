@@ -50,7 +50,7 @@ const Connections = () => {
 
   return (
     <div className="flex justify-center w-full px-2 sm:px-0">
-      <ul className="w-full md:w-2/3 lg:w-1/2 bg-base-100 rounded-box shadow-md">
+      <ul className="w-full md:w-2/3 lg:w-1/2 bg-base-300 rounded-box ">
         <h1 className="p-4 pb-2 text-xl font-semibold text-center opacity-70 mb-5">
           Connections
         </h1>

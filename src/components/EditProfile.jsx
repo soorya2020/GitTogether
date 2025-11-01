@@ -69,14 +69,14 @@ const EditProfile = () => {
             </div>
           </div>
         )}
-        <div className="flex flex-col lg:flex-row justify-center items-start lg:items-center gap-10 mt-5 mb-15">
+        <div  className="flex flex-col lg:flex-row justify-center items-start  lg:items-start gap-10 mt-5 mb-15 ">
           <div className="card w-96 bg-base-200 shadow-sm ">
             <div className="card-body ">
               {/* <span className="badge badge-xs badge-warning">Most Popular</span> */}
-              <div className="flex justify-center">
+              <div className=" ">
                 <h2 className="text-3xl font-bold">Edit Profile</h2>
               </div>
-              <div className="mt-6">
+              <div className="mt-6 ">
                 <fieldset className="fieldset">
                   <legend className="fieldset-legend">First Name</legend>
                   <input

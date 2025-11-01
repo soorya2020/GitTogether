@@ -1,9 +1,9 @@
 import React from "react";
-import { useSelector } from "react-redux";
 
-const Message = ({ messages }) => {
-  const { _id: currentUserId } =
-    useSelector((store) => store?.userReducer?.user) || "";
+import Loading from "../Loading";
+
+const Message = ({ messages, currentUserId }) => {
+  if (!currentUserId) return <Loading />;
 
   return (
     <div>

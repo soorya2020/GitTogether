@@ -1,4 +1,5 @@
 import React from "react";
+import { MessageCircle, Ban, Flag } from "lucide-react";
 
 const ConnectionList = ({
   firstName,
@@ -11,12 +12,11 @@ const ConnectionList = ({
   showButtons,
   handleClick,
 }) => {
-
-
   return (
     <li
+    
       key={id}
-      className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 last:border-none hover:bg-base-200 rounded-lg transition-all"
+      className="flex flex-col  sm:flex-row sm:items-center sm:justify-between  px-3 py-5 my-2 last:border-none bg-base-200 hover:bg-base-100 rounded-md hover:scale-101"
     >
       {/* Left section: index + image + name */}
       <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -35,10 +35,10 @@ const ConnectionList = ({
         {/* Name + Details */}
         <div className="truncate">
           <div className="font-semibold text-base leading-tight">
-            {firstName + " " + lastName}
+            {firstName + " " + (lastName || "")}
           </div>
           <div className="text-xs uppercase font-semibold opacity-60">
-            {age + " " + gender}
+            {`${age || ""} ${gender || ""}`.trim() || "—"}
           </div>
         </div>
       </div>
@@ -90,22 +90,27 @@ const ConnectionList = ({
         ) : (
           <div className="w-full flex justify-around sm:justify-end gap-2">
             <button
-              className="btn btn-xs sm:btn-sm btn-success"
+              className="btn btn-xs sm:btn-sm btn-success flex items-center justify-center"
               onClick={() => handleClick("chat", id)}
+              title="Chat"
             >
-              Chat
+              <MessageCircle size={16} />
             </button>
+
             <button
-              className="btn btn-xs sm:btn-sm btn-error"
+              className="btn btn-xs sm:btn-sm btn-error flex items-center justify-center"
               onClick={() => handleClick("block", id)}
+              title="Block"
             >
-              Block
+              <Ban size={16} />
             </button>
+
             <button
-              className="btn btn-xs sm:btn-sm btn-primary"
+              className="btn btn-xs sm:btn-sm btn-primary flex items-center justify-center"
               onClick={() => handleClick("report", id)}
+              title="Report"
             >
-              Report
+              <Flag size={16} />
             </button>
           </div>
         )}
