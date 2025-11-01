@@ -1,13 +1,12 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../store/userSlice";
 import { Link, useNavigate } from "react-router";
 import { BASE_URL } from "../utils/constants";
 import GoogleButton from "./GoogleButton";
 
-import { GoogleLogin } from "@react-oauth/google";
-import { useGoogleLogin } from "@react-oauth/google";
+import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
   const [email, setEmail] = useState("demouser@gmail.com");
@@ -19,6 +18,8 @@ const Login = () => {
   const disptch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((store) => store.userReducer.user);
+
+  const googleButtonRef = useRef(null);
 
   useEffect(() => {
     //cannot access login if user already exist
@@ -57,6 +58,8 @@ const Login = () => {
 
   const handleGoogleLogin = async (credentialResponse) => {
     try {
+      console.log(credentialResponse);
+
       const { credential } = credentialResponse;
       // Send credential (ID token) to your backend
       const res = await axios.post(
@@ -65,14 +68,17 @@ const Login = () => {
         { withCredentials: true }
       );
       navigate("/profile");
-      console.log("my user data", res.data.user);
 
       disptch(addUser(res.data.user));
-      console.log("User logged in:", res.data.user);
     } catch (err) {
       console.error(err);
     }
   };
+
+  // const login = useGoogleLogin({
+  //   onSuccess: (response) => console.log(response),
+
+  // });
 
   return (
     <div
@@ -158,17 +164,20 @@ const Login = () => {
               {isLogin ? "Login" : "Sign Up"}
             </button>
 
-            <div className="mt-6 ">
-              <GoogleLogin
-                onSuccess={handleGoogleLogin}
-                onError={() => console.log("Google login failed")}
-                width="100%"
-              />
+            <div>
+              {/* Hidden Google Login button */}
+              <div className="mt-5 ">
+                <GoogleLogin
+                  theme="outline"
+                  width={"100%"}
+                  text={isLogin ? "signin_with" : "signup_with"}
+                  logo_alignment="center"
+                  onSuccess={handleGoogleLogin}
+                  onError={() => console.log("Google login failed")}
+                />
+              </div>
             </div>
-
-            {/* <div onClick={googleLogin}>
-              <GoogleButton />
-            </div> */}
+            {/* <GoogleButton onClick={() => login()} /> */}
           </div>
         </div>
       </div>

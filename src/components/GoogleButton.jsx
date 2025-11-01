@@ -1,8 +1,11 @@
 import React from "react";
 
-const GoogleButton = () => {
+const GoogleButton = ({ onClick }) => {
   return (
-    <button  className="btn w-full bg-white text-black border-[#e5e5e5]">
+    <button
+      onClick={onClick}
+      className="btn w-full bg-white text-black border-[#e5e5e5] "
+    >
       <svg
         aria-label="Google logo"
         width="16"

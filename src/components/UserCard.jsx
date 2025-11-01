@@ -8,15 +8,26 @@ const UserCard = ({ user, handleClick = () => {}, loading }) => {
     loading?.status === "interested" ? loading.loading : false;
   const { _id, firstName, lastName, about, skills, age, gender, profileUrl } =
     user;
+
+  function getHighResGoogleProfile(url) {
+    if (!url || typeof url !== "string") return url;
+    // Regex: =s<number>-c  OR =s<number>
+    const regex = /=s\d+(-c)?/;
+    // Replace with =s0-c (max resolution) only if it exists
+    if (regex.test(url)) {
+      return url.replace(regex, "=s0-c");
+    }
+    return url;
+  }
   return (
     <div key={user?._id} className="card bg-base-200 w-96 shadow-sm  ">
       <figure className="h-100 w-full overflow-hidden">
         <img
           src={
-            profileUrl.replace(/=s\d+-c/, "=s0-c") ||
-            "https://via.placeholder.com/150"
+            getHighResGoogleProfile(profileUrl) ||
+            "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
           }
-          alt="Shoes"
+          alt="profile image"
           className="h-full w-full object-cover object-center"
         />
       </figure>

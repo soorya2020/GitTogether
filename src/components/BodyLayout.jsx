@@ -32,7 +32,7 @@ const BodyLayout = () => {
         navigate("/login");
         dispatch(removeUser());
       }
-
+      navigate("/login");
       console.error(error);
     }
   };
