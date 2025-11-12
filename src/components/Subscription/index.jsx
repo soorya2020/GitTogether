@@ -4,6 +4,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import PremiumPage from "./PremiumPage";
+import { API } from "../../utils/axios";
 
 const Subscription = () => {
   const navigate = useNavigate();
@@ -18,9 +19,7 @@ const Subscription = () => {
 
   const verifyPremiumUser = async () => {
     try {
-      const response = await axios.get(BASE_URL + "/payment/verify", {
-        withCredentials: true,
-      });
+      const response = await API.get("/payment/verify");
       if (response.data.isPremium) {
         setIsPremium(true);
       } else {
@@ -37,11 +36,7 @@ const Subscription = () => {
       navigate("/feeds");
     }
     try {
-      const response = await axios.post(
-        BASE_URL + "/payment/order",
-        { memberShipType },
-        { withCredentials: true }
-      );
+      const response = await API.post("/payment/order");
 
       const { amount, id, key, currency } = response.data.order;
       const { firstName, lastName, email } = response.data.user;

@@ -6,6 +6,7 @@ import { BASE_URL } from "../utils/constants";
 import ConnectionList from "./ConnectionList";
 import EmptyState from "./EmptyState";
 import Loading from "./Loading";
+import { API } from "../utils/axios";
 
 const Requests = () => {
   const dispatch = useDispatch();
@@ -13,9 +14,7 @@ const Requests = () => {
 
   const getRequests = async () => {
     try {
-      const response = await axios.get(BASE_URL + "/user/request/recieved", {
-        withCredentials: true,
-      });
+      const response = await API.get("/user/request/recieved");
       dispatch(addRequests(response.data.data));
     } catch (error) {
       console.error(error);
@@ -23,10 +22,8 @@ const Requests = () => {
   };
 
   const handleButtonClick = async (status, connectionRequestId) => {
-    const response = await axios.post(
-      BASE_URL + `/request/review/${status}/${connectionRequestId}`,
-      {},
-      { withCredentials: true }
+    const response = await API.post(
+      `/request/review/${status}/${connectionRequestId}`
     );
     dispatch(removeConnection(connectionRequestId));
   };
@@ -58,7 +55,7 @@ const Requests = () => {
         </div>
         {requests.map((request, index) => {
           return (
-            <div className="mt-5 overflow-hidden"  key={request._id}>
+            <div className="mt-5 overflow-hidden" key={request._id}>
               <ConnectionList
                 id={request._id}
                 index={index}

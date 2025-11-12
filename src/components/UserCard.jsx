@@ -1,13 +1,25 @@
 import React from "react";
 import Loader from "./Loader";
+import { Star } from "lucide-react";
 
 const UserCard = ({ user, handleClick = () => {}, loading }) => {
+  console.log(user);
+
   const ignoredLoading =
     loading?.status === "ignored" ? loading.loading : false;
   const interestedLoading =
     loading?.status === "interested" ? loading.loading : false;
-  const { _id, firstName, lastName, about, skills, age, gender, profileUrl } =
-    user;
+  const {
+    _id,
+    firstName,
+    lastName,
+    about,
+    skills,
+    age,
+    gender,
+    profileUrl,
+    isPremium,
+  } = user;
 
   function getHighResGoogleProfile(url) {
     if (!url || typeof url !== "string") return url;
@@ -19,6 +31,7 @@ const UserCard = ({ user, handleClick = () => {}, loading }) => {
     }
     return url;
   }
+
   return (
     <div key={user?._id} className="card bg-base-200 w-96 shadow-sm  ">
       <figure className="h-100 w-full overflow-hidden">
@@ -32,7 +45,17 @@ const UserCard = ({ user, handleClick = () => {}, loading }) => {
         />
       </figure>
       <div className="card-body">
-        <h2 className="card-title">{firstName + " " + lastName}</h2>
+        <h2 className="card-title">
+          {firstName + " " + lastName}
+          <div className="tooltip cursor-pointer" data-tip="premium user">
+            {isPremium && (
+              <span>
+                {" "}
+                <Star fill="yellow" size={16} />
+              </span>
+            )}
+          </div>
+        </h2>
         <p>{about}</p>
         {age && gender && <p>{age + ", " + gender}</p>}
 

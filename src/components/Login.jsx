@@ -5,6 +5,7 @@ import { addUser } from "../store/userSlice";
 import { Link, useNavigate } from "react-router";
 import { BASE_URL } from "../utils/constants";
 import GoogleButton from "./GoogleButton";
+import { API } from "../utils/axios";
 
 import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
 
@@ -19,6 +20,7 @@ const Login = () => {
   const navigate = useNavigate();
   const user = useSelector((store) => store.userReducer.user);
 
+
   const googleButtonRef = useRef(null);
 
   useEffect(() => {
@@ -31,22 +33,19 @@ const Login = () => {
   const handleAuth = async () => {
     try {
       if (isLogin) {
-        const response = await axios.post(
-          BASE_URL + "/login",
-          {
-            email,
-            password,
-          },
-          { withCredentials: true }
-        );
+        const response = await API.post("/login", {
+          email,
+          password,
+        });
         disptch(addUser(response.data.user));
         navigate("/feeds");
       } else {
-        const response = await axios.post(
-          BASE_URL + "/signup",
-          { email, password, firstName, lastName },
-          { withCredentials: true }
-        );
+        const response = await API.post("/signup", {
+          email,
+          password,
+          firstName,
+          lastName,
+        });
         disptch(addUser(response.data.data));
         navigate("/profile");
       }
@@ -62,11 +61,7 @@ const Login = () => {
 
       const { credential } = credentialResponse;
       // Send credential (ID token) to your backend
-      const res = await axios.post(
-        BASE_URL + "/auth/google-login",
-        { credential },
-        { withCredentials: true }
-      );
+      const res = await API.post("/auth/google-login", { credential });
       navigate("/profile");
 
       disptch(addUser(res.data.user));

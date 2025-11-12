@@ -7,6 +7,7 @@ import { Link, NavLink, useNavigate } from "react-router";
 import { clearRequests } from "../store/requestSlice";
 import { clearFeeds } from "../store/feedSlice";
 import { clearConnections } from "../store/connectionSlice";
+import { API } from "../utils/axios";
 
 function NavBar() {
   const user = useSelector((store) => store.userReducer.user);
@@ -16,11 +17,7 @@ function NavBar() {
 
   const handleLogOut = async () => {
     try {
-      const response = await axios.post(
-        BASE_URL + "/logout",
-        {},
-        { withCredentials: true }
-      );
+      const response = await API.post("/logout");
       alert(response.data.message);
       navigate("/login");
       dispatch(removeUser());
@@ -150,15 +147,15 @@ function NavBar() {
                   to="/subscription"
                 >
                   Subscription
-                  <span
-                    className={`badge badge-sm font-semibold text-xs px-3 py-2 ${
-                      isPremium
-                        ? "hidden"
-                        : "badge-warning text-base-100 shadow-sm"
-                    }`}
-                  >
-                    {!isPremium && "Buy"}
-                  </span>
+                  {isPremium ? (
+                    <span className="flex items-center gap-1 text-yellow-400 font-semibold">
+                      ⭐ Premium!
+                    </span>
+                  ) : (
+                    <span className="badge badge-warning text-base-100 shadow-sm">
+                      Buy
+                    </span>
+                  )}
                 </Link>
               </li>
               <li>

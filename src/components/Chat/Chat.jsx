@@ -6,6 +6,8 @@ import { useSelector } from "react-redux";
 import { BASE_URL } from "../../utils/constants";
 import axios from "axios";
 import Loading from "../Loading";
+import { API } from "../../utils/axios";
+
 const Chat = () => {
   const { toUserId } = useParams();
   const [newMessage, setNewMessage] = useState("");
@@ -39,12 +41,7 @@ const Chat = () => {
 
   const fetchRecieverDetails = async () => {
     try {
-      const response = await axios.get(
-        BASE_URL + "/chat/targetUser/" + toUserId,
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await API.get("/chat/targetUser/" + toUserId);
 
       setRecieverData(response.data.data);
     } catch (error) {}
@@ -53,11 +50,7 @@ const Chat = () => {
   const fetchMessage = async () => {
     if (messages.length === 0) {
       try {
-        const response = await axios.get(
-          BASE_URL + "/chat/" + toUserId,
-
-          { withCredentials: true }
-        );
+        const response = await API.get("/chat/" + toUserId);
 
         const chatMessages = response?.data?.data?.messages.map((msg) => {
           const { senderId, text, createdAt } = msg;

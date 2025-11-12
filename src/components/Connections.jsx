@@ -7,6 +7,7 @@ import ConnectionList from "./ConnectionList";
 import { useNavigate } from "react-router";
 import EmptyState from "./EmptyState";
 import Loading from "./Loading";
+import { API } from '../utils/axios'
 
 const Connections = () => {
   const { connections } = useSelector((store) => store.connectionsReducer);
@@ -16,9 +17,7 @@ const Connections = () => {
 
   const getConnections = async () => {
     try {
-      const response = await axios.get(BASE_URL + "/user/request/connections", {
-        withCredentials: true,
-      });
+      const response = await API.get("/user/request/connections");
       dispatch(addConnections(response.data.data));
     } catch (error) {
       console.error(error);

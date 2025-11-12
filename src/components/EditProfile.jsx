@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import UserCard from "./UserCard";
-import Loading from './Loading'
+import Loading from "./Loading";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { addUser } from "../store/userSlice";
+import { API } from '../utils/axios'
 
 const EditProfile = () => {
   const user = useSelector((store) => store.userReducer.user);
@@ -18,6 +19,7 @@ const EditProfile = () => {
     gender: "",
     skills: "",
     profileUrl: "",
+    isPremium: "",
   });
 
   const [errorMessage, setErrorMessage] = useState("");
@@ -35,6 +37,7 @@ const EditProfile = () => {
         gender: user.gender || "",
         skills: user.skills || "",
         profileUrl: user.profileUrl || "",
+       
       });
     }
   }, [user]);
@@ -63,11 +66,7 @@ const EditProfile = () => {
   const handleSave = async () => {
     if (!hasChanges) return; // no changes, do nothing
     try {
-      const response = await axios.patch(
-        BASE_URL + "/profile/edit",
-        formData,
-        { withCredentials: true }
-      );
+      const response = await API.patch(BASE_URL + "/profile/edit", formData);
       dispatch(addUser(response.data.data));
       setErrorMessage("");
       setToast(true);
@@ -78,10 +77,10 @@ const EditProfile = () => {
     }
   };
 
-  if (!user) return <Loading/>
+  if (!user) return <Loading />;
 
   return (
-   <>
+    <>
       {toast && (
         <div className="toast toast-top toast-center z-10">
           <div className="alert alert-success">

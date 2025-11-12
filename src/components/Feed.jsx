@@ -6,6 +6,7 @@ import { addFeeds, removeUserFromFeeds } from "../store/feedSlice";
 import UserCard from "../components/UserCard";
 import EmptyState from "./EmptyState";
 import About from "./About";
+import { API } from "../utils/axios";
 
 function Feed() {
   const feeds = useSelector((store) => store.feedsReducer.feeds);
@@ -16,12 +17,7 @@ function Feed() {
   const fetchFeeds = async () => {
     if (feeds) return;
     try {
-      const response = await axios.get(
-        BASE_URL + "/user/feeds",
-
-        { withCredentials: true }
-      );
-
+      const response = await API.get("/user/feeds");
       dispatch(addFeeds(response.data.data));
     } catch (error) {
       console.error(error);
@@ -31,13 +27,8 @@ function Feed() {
   const handleStatusChange = async (status, userId) => {
     try {
       setLoading({ status: status, loading: true });
-      const response = await axios.post(
-        BASE_URL + "/request/send/" + status + "/" + userId,
-        {},
-        { withCredentials: true }
-      );
+      const response = await API.post("/request/send/" + status + "/" + userId);
       setLoading({ status: status, loading: false });
-
       dispatch(removeUserFromFeeds(userId));
     } catch (error) {
       setLoading({ status: status, loading: false });

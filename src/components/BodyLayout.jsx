@@ -9,6 +9,7 @@ import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { addUser, removeUser } from "../store/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { API } from '../utils/axios'
 
 const BodyLayout = () => {
   const dispatch = useDispatch();
@@ -22,9 +23,7 @@ const BodyLayout = () => {
   const fetchUser = async () => {
     if (user || location.pathname === "/") return;
     try {
-      const response = await axios.get(BASE_URL + "/profile/view", {
-        withCredentials: true,
-      });
+      const response = await API.get("/profile/view");
 
       dispatch(addUser(response.data));
     } catch (error) {
