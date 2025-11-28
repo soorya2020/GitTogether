@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import { BASE_URL, SUBSCRIPTION_PLANS } from "../../utils/constants";
+import {  SUBSCRIPTION_PLANS } from "../../utils/constants";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";

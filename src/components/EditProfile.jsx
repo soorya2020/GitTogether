@@ -3,9 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import UserCard from "./UserCard";
 import Loading from "./Loading";
 import axios from "axios";
-import { BASE_URL } from "../utils/constants";
 import { addUser } from "../store/userSlice";
-import { API } from '../utils/axios'
+import { API } from "../utils/axios";
 
 const EditProfile = () => {
   const user = useSelector((store) => store.userReducer.user);
@@ -37,7 +36,6 @@ const EditProfile = () => {
         gender: user.gender || "",
         skills: user.skills || "",
         profileUrl: user.profileUrl || "",
-       
       });
     }
   }, [user]);
@@ -66,7 +64,7 @@ const EditProfile = () => {
   const handleSave = async () => {
     if (!hasChanges) return; // no changes, do nothing
     try {
-      const response = await API.patch(BASE_URL + "/profile/edit", formData);
+      const response = await API.patch("/profile/edit", formData);
       dispatch(addUser(response.data.data));
       setErrorMessage("");
       setToast(true);

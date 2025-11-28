@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../store/userSlice";
 import { Link, useNavigate } from "react-router";
-import { BASE_URL } from "../utils/constants";
 import GoogleButton from "./GoogleButton";
 import { API } from "../utils/axios";
 

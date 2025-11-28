@@ -6,7 +6,6 @@ import Footer from "./Footer";
 import SpeedDial from "./SpeedDial";
 import Tabs from "./Tabs";
 import axios from "axios";
-import { BASE_URL } from "../utils/constants";
 import { addUser, removeUser } from "../store/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { API } from '../utils/axios'

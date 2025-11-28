@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addRequests, removeConnection } from "../store/requestSlice";
-import { BASE_URL } from "../utils/constants";
 import ConnectionList from "./ConnectionList";
 import EmptyState from "./EmptyState";
 import Loading from "./Loading";

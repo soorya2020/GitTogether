@@ -3,7 +3,6 @@ import { useParams } from "react-router";
 import Message from "./Message";
 import { createSocketConnection } from "../../utils/socket";
 import { useSelector } from "react-redux";
-import { BASE_URL } from "../../utils/constants";
 import axios from "axios";
 import Loading from "../Loading";
 import { API } from "../../utils/axios";

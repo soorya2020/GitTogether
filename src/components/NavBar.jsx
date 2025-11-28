@@ -2,7 +2,6 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { removeUser } from "../store/userSlice";
 import axios from "axios";
-import { BASE_URL } from "../utils/constants";
 import { Link, NavLink, useNavigate } from "react-router";
 import { clearRequests } from "../store/requestSlice";
 import { clearFeeds } from "../store/feedSlice";
