@@ -7,6 +7,7 @@ import { clearRequests } from "../store/requestSlice";
 import { clearFeeds } from "../store/feedSlice";
 import { clearConnections } from "../store/connectionSlice";
 import { API } from "../utils/axios";
+import Logo from "./Logo";
 
 function NavBar() {
   const user = useSelector((store) => store.userReducer.user);
@@ -29,11 +30,12 @@ function NavBar() {
   };
 
   return (
-    <div className="navbar bg-base-300 shadow-sm px-4 md:px-8 justify-between">
+    <div className="navbar bg-base-300 shadow-sm px-4 md:px-8 justify-between pt-4">
+     
       {/* LEFT: Logo */}
       <div className="flex-none">
         <Link to="/" className="btn btn-ghost text-lg md:text-xl">
-          🧑‍💻 GitTogether
+          <Logo />
         </Link>
       </div>
 
@@ -90,7 +92,7 @@ function NavBar() {
       {user && (
         <div className="flex items-center gap-3 md:gap-4 flex-none">
           <h1 className="hidden sm:block text-sm md:text-base whitespace-nowrap">
-            Welcome,{" "}
+            Hellow,{" "}
             <span className="text-primary font-semibold">{user.firstName}</span>
           </h1>
 

@@ -7,7 +7,7 @@ const Requests = lazy(() => import("./components/Requests.jsx"));
 const Connections = lazy(() => import("./components/Connections.jsx"));
 const Subscription = lazy(() => import("./components/Subscription"));
 const Chat = lazy(() => import("./components/Chat/Chat.jsx"));
-const Home = lazy(() => import("./components/Home.jsx"));
+const Home = lazy(() => import("./components/Home"));
 import { BrowserRouter, Route, Routes } from "react-router";
 import BodyLayout from "./components/BodyLayout";
 import { store } from "./store/store.js";

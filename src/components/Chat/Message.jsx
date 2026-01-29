@@ -1,42 +1,54 @@
 import React from "react";
-
 import Loading from "../Loading";
+import MessageStatus from "./MessageStatus";
 
 const Message = ({ messages, currentUserId }) => {
+
   if (!currentUserId) return <Loading />;
 
   return (
-    <div>
-      {messages.map((message, index) => {
-        return (
-          <div key={index} className="flex-1  p-1">
-            <div
-              className={`chat ${
-                message.senderId === currentUserId ? "chat-end" : "chat-start"
-              }`}
-            >
-              <div className="chat-header">
-                {message.firstName}
-                <time className="text-xs opacity-50">12:46</time>
+   <div className="flex flex-col w-full pb-4">
+  {messages.map((message, index) => {
+    const isMe = message.senderId.toString() === currentUserId.toString();
+    const showDateDivider = index === 0 || 
+      new Date(messages[index].createdAt).toDateString() !== new Date(messages[index - 1].createdAt).toDateString();
+
+    return (
+      <React.Fragment key={message._id || index}>
+        {showDateDivider && (
+          <div className="divider text-[10px] opacity-40 my-4">
+            {new Date(message.createdAt).toDateString()}
+          </div>
+        )}
+
+        <div className={`chat ${isMe ? "chat-end" : "chat-start"} mb-1`}>
+          <div className={`chat-bubble max-w-[85%] ${!isMe ? "bg-secondary  text-black" : "bg-base-200 text-base-content"}`}>
+            
+            {/* Simple Flex Container to align everything */}
+            <div className="flex flex-wrap items-end justify-end gap-2">
+              
+              <p className="flex-1 text-[15px] leading-snug break-words">
+                {message.text}
+              </p>
+
+              <div className="flex items-center gap-1 shrink-0 mb-[-2px]">
+                <time className="text-[10px] opacity-70 uppercase">
+                  {new Date(message.createdAt).toLocaleTimeString([], {
+                    hour: "numeric",
+                    minute: "2-digit",
+                    hour12: true,
+                  })}
+                </time>
+                {isMe && <MessageStatus status={message.status} />}
               </div>
-              <div
-                className={`chat-bubble ${
-                  message.senderId.toString() !== currentUserId
-                    ? "chat-bubble-primary"
-                    : ""
-                }`}
-              >
-                <p className=" text-sm">{message.text}</p>
-              </div>
+
             </div>
           </div>
-        );
-      })}
-      {/* Hidden element to prevent purge */}
-      <div className="hidden">
-        chat-start chat-end chat-bubble chat-bubble-primary
-      </div>
-    </div>
+        </div>
+      </React.Fragment>
+    );
+  })}
+</div>
   );
 };
 

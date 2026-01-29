@@ -51,18 +51,24 @@ function Feed() {
 
   return (
     feeds && (
-      <div className="flex flex-col items-center my-5">
-        <h1 className="p-4 pb-2 text-lg  opacity-60 tracking-wide">
-          Your Feeds
-        </h1>
+      <div className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] px-4">
+        {/* Header: Reduced bottom padding, added subtle top margin */}
+        <header className="text-center mb-4">
+          <h1 className="text-sm md:text-base font-bold opacity-40 uppercase tracking-[0.2em]">
+            Your Feeds
+          </h1>
+          {/* Optional: About can go here if it's a small subtitle */}
+          {/* <About /> */}
+        </header>
 
-        <About />
-
-        <UserCard
-          user={feeds[0]}
-          handleClick={handleStatusChange}
-          loading={loading}
-        />
+        {/* Card Container */}
+        <div className="w-full max-w-sm flex flex-col items-center animate-in fade-in zoom-in duration-300">
+          <UserCard
+            user={feeds[0]}
+            handleClick={handleStatusChange}
+            loading={loading}
+          />
+        </div>
       </div>
     )
   );

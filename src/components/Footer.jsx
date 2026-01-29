@@ -1,6 +1,23 @@
 import React from "react";
-
+import { Github, Linkedin, Instagram, Copyright } from "lucide-react";
 const Footer = () => {
+  const socials = [
+    {
+      name: "GitHub",
+      href: "https://github.com/soorya2020",
+      icon: Github,
+    },
+    {
+      name: "LinkedIn",
+      href: "https://www.linkedin.com/in/soorya-krishnanunni",
+      icon: Linkedin,
+    },
+    {
+      name: "Instagram",
+      href: "https://www.instagram.com/so0rya_krishnanunni",
+      icon: Instagram,
+    },
+  ];
   return (
     <footer className="footer hidden sm:flex sm:flex-row items-center justify-between bg-base-300 px-6 py-4 shadow-inner">
       <aside className="flex items-center gap-3">
@@ -19,57 +36,27 @@ const Footer = () => {
         </p>
       </aside>
 
-      <nav className="flex gap-5">
-        <a
-          href="https://www.linkedin.com/in/soorya-krishnanunni"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:scale-110 transition-transform"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            className="fill-current text-primary"
-          >
-            <path d="M19 0h-14C2.239 0 0 2.239 0 5v14c0 2.761 2.239 5 5 5h14c2.761 0 5-2.239 5-5V5c0-2.761-2.239-5-5-5zM7.09 19H4.477V9h2.613v10zM5.783 7.77c-.837 0-1.515-.678-1.515-1.515s.678-1.515 1.515-1.515 1.515.678 1.515 1.515-.678 1.515-1.515 1.515zM20 19h-2.612v-4.9c0-1.169-.021-2.675-1.63-2.675-1.631 0-1.882 1.273-1.882 2.592V19h-2.61V9h2.506v1.367h.035c.349-.661 1.202-1.358 2.476-1.358 2.647 0 3.142 1.742 3.142 4.007V19z" />
-          </svg>
-        </a>
-
-        <a
-          href="https://github.com/soorya2020"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:scale-110 transition-transform"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            className="fill-current text-primary"
-          >
-            <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.333-1.755-1.333-1.755-1.09-.745.084-.729.084-.729 1.205.084 1.84 1.236 1.84 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.418-1.305.762-1.605-2.665-.3-5.466-1.334-5.466-5.933 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23a11.52 11.52 0 0 1 3.003-.404c1.02.005 2.045.138 3.003.404 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.628-5.475 5.922.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
-          </svg>
-        </a>
-        <a
-          href="https://www.instagram.com/so0rya_krishnanunni"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:scale-110 transition-transform"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            width="24"
-            height="24"
-            className="fill-current text-primary"
-          >
-            <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zm4.25 3a5.25 5.25 0 1 1 0 10.5 5.25 5.25 0 0 1 0-10.5zm0 1.5a3.75 3.75 0 1 0 0 7.5 3.75 3.75 0 0 0 0-7.5zm5.75-.75a.75.75 0 1 1 0 1.5.75.75 0 0 1 0-1.5z" />
-          </svg>
-        </a>
-      </nav>
+      <div className="flex items-center gap-6">
+        {socials.map((social) => {
+          const Icon = social.icon;
+          return (
+            <a
+              key={social.name}
+              href={social.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative p-2 rounded-xl bg-base-200/50 hover:bg-primary/10 transition-all duration-300 hover:scale-110"
+              aria-label={social.name}
+            >
+              <Icon className="w-5 h-5 text-base-content/60 group-hover:text-primary transition-colors" />
+              {/* Tooltip */}
+              <span className="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-xs bg-black text-white px-2 py-1 rounded whitespace-nowrap">
+                {social.name}
+              </span>
+            </a>
+          );
+        })}
+      </div>
     </footer>
   );
 };

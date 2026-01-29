@@ -1,11 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { useParams } from "react-router";
-import Message from "./Message";
-import { createSocketConnection } from "../../utils/socket";
 import { useSelector } from "react-redux";
-import axios from "axios";
-import Loading from "../Loading";
+import { createSocketConnection } from "../../utils/socket";
 import { API } from "../../utils/axios";
+import Message from "./Message";
+import Loading from "../Loading";
 
 const Chat = () => {
   const { toUserId } = useParams();
@@ -13,126 +12,174 @@ const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [recieverData, setRecieverData] = useState(null);
   const chatContainerRef = useRef(null);
+  const socketRef = useRef(null);
+
   const user = useSelector((store) => store.userReducer?.user);
-  const { _id: userId, firstName } = user || "";
+  const userId = user?._id;
+  const firstName = user?.firstName;
+
+  // Optimized Fetcher
+  const loadChatData = useCallback(async () => {
+    try {
+      const [userRes, msgRes] = await Promise.all([
+        API.get(`/chat/targetUser/${toUserId}`),
+        API.get(`/chat/${toUserId}`),
+      ]);
+
+      setRecieverData(userRes.data.data);
+
+      const formattedMsgs = msgRes?.data?.data?.messages.map((msg) => ({
+        _id: msg._id,
+        senderId: msg.senderId._id,
+        firstName: msg.senderId.firstName,
+        text: msg.text,
+        createdAt: msg.createdAt,
+        status: msg.status || "sent",
+      }));
+      setMessages(formattedMsgs);
+
+      // Tell server we've seen these loaded messages
+      if (socketRef.current) {
+        socketRef.current.emit("markAsSeen", {
+          senderId: toUserId,
+          receiverId: userId,
+        });
+      }
+    } catch (err) {
+      console.error("Failed to load chat", err);
+    }
+  }, [toUserId, userId]);
 
   useEffect(() => {
-    fetchRecieverDetails();
-    fetchMessage();
+    loadChatData();
+  }, [loadChatData]);
 
-    if (userId && toUserId) {
-      const socket = createSocketConnection();
+  // Socket Lifecycle - Cleaned up
+  useEffect(() => {
+    if (!userId || !toUserId) return;
 
-      socket.emit("joinChat", { userId, toUserId });
+    socketRef.current = createSocketConnection();
+    const socket = socketRef.current;
 
-      socket.on("messageRecieved", ({ senderId, firstName, text }) => {
-        setMessages((prevState) => [
-          ...prevState,
-          { senderId, text, firstName },
-        ]);
-      });
+    socket.emit("joinChat", { userId, toUserId });
 
-      return () => {
-        socket.disconnect();
-      };
-    }
-  }, [userId, toUserId, messages]);
+    socket.on("messageSentAck", ({ _id, status, text }) => {
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.status === "sent" && msg.text === text
+            ? { ...msg, _id, status }
+            : msg,
+        ),
+      );
+    });
 
-  const fetchRecieverDetails = async () => {
-    try {
-      const response = await API.get("/chat/targetUser/" + toUserId);
-
-      setRecieverData(response.data.data);
-    } catch (error) {}
-  };
-
-  const fetchMessage = async () => {
-    if (messages.length === 0) {
-      try {
-        const response = await API.get("/chat/" + toUserId);
-
-        const chatMessages = response?.data?.data?.messages.map((msg) => {
-          const { senderId, text, createdAt } = msg;
-          return {
-            senderId: senderId._id,
-            firstName: senderId.firstName,
-            text,
-            createdAt,
-          };
+    socket.on("messageReceived", (msg) => {
+      if (msg.senderId !== userId) {
+        setMessages((prev) => [...prev, { ...msg, status: "received" }]);
+        socket.emit("markAsSeen", {
+          senderId: msg.senderId,
+          receiverId: userId,
         });
-
-        setMessages(chatMessages);
-      } catch (error) {
-        console.error(error.message);
       }
-    }
-  };
+    });
+
+    socket.on("statusUpdate", ({ status }) => {
+      setMessages((prev) =>
+        prev.map((m) =>
+          m.senderId === userId && m.status !== "seen"
+            ? { ...m, status: "seen" }
+            : m,
+        ),
+      );
+    });
+
+    return () => {
+      socket.off("messageSentAck");
+      socket.off("messageReceived");
+      socket.off("statusUpdate");
+      socket.disconnect();
+    };
+  }, [userId, toUserId]);
 
   const sendMessage = () => {
-    if (newMessage.trim().length === 0) return;
-    setNewMessage("");
-    const socket = createSocketConnection();
-    socket.emit("sendMessage", {
+    if (!newMessage.trim()) return;
+
+    const msgPayload = {
       firstName,
       userId,
       toUserId,
       text: newMessage,
-    });
+      status: "sent",
+      senderId: userId,
+      createdAt: new Date().toISOString(),
+    };
+
+    setMessages((prev) => [...prev, msgPayload]);
+    socketRef.current.emit("sendMessage", msgPayload);
+    setNewMessage("");
   };
 
+  // Scroll to bottom
   useEffect(() => {
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTo({
-        top: chatContainerRef.current.scrollHeight,
-        behavior: "smooth",
-      });
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
     }
   }, [messages]);
 
   if (!recieverData) return <Loading />;
 
   return (
-    <div className="flex justify-center items-center py-8 px-4 bg-base-200 ">
-      <div className="card w-full max-w-2xl bg-base-100 shadow-xl flex flex-col h-[80vh] relative">
+    <div className="flex justify-center items-center h-[100dvh] bg-base-300 p-0 md:p-4 pb-16 md:pb-30">
+      <div className="card w-full max-w-2xl bg-base-100 shadow-xl flex flex-col h-full max-h-full overflow-hidden">
+        {" "}
         {/* Header */}
-        <div className="flex items-center gap-3 p-4 border-b border-base-300">
-          <div className="avatar">
-            <div className="w-12 rounded-full">
-              <img src={recieverData.profileUrl} alt="User Avatar" />
+        <div className="flex items-center gap-3 p-3 border-b border-base-300 bg-base-100 z-10">
+          {" "}
+          <div className="avatar online">
+            <div className="w-10 rounded-full">
+              <img src={recieverData.profileUrl} alt="Avatar" />
             </div>
           </div>
           <div>
-            <h2 className="font-semibold text-lg">
-              {recieverData.firstName + " " + recieverData.lastName}
+            <h2 className="font-bold text-sm md:text-base">
+              {recieverData.firstName}
             </h2>
-            <p className="text-sm text-success">● Online</p>
+            <p className="text-[10px] text-success font-medium">Online</p>
           </div>
         </div>
-
-        {/* Chat Area */}
+        {/* Chat Area with Pattern */}
         <div
           ref={chatContainerRef}
-          className="flex-1 overflow-y-auto no-scrollbar "
+          className="flex-1 overflow-y-auto p-4 no-scrollbar"
+          style={{
+            backgroundColor: "#2b2826", // Instant fallback color
+            backgroundImage: `linear-gradient(rgba(229, 221, 213, 0.8), rgba(229, 221, 213, 0.8)), url("https://st.depositphotos.com/1298561/4896/v/950/depositphotos_48968489-stock-illustration-doodle-communication-pattern.jpg")`,
+            backgroundSize: "300px",
+            backgroundRepeat: "repeat",
+            backgroundAttachment: "local", // Improves scroll performance
+          }}
         >
-          <Message messages={messages || []} currentUserId={userId} />
+          <Message messages={messages} currentUserId={userId} />
         </div>
-
-        {/* Input Area */}
-        <div className="p-3 border-t border-base-300 flex gap-2">
+        {/* Input */}
+        <div className="p-3 bg-base-100 border-t flex gap-2 items-center">
           <input
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                sendMessage();
-              }
-            }}
-            type="text"
-            placeholder="Type your message..."
-            className="input input-bordered input-sm flex-1"
+            onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+            className="input input-bordered input-md flex-1 rounded-full px-4"
+            placeholder="Type a message..."
           />
-          <button onClick={sendMessage} className="btn btn-primary btn-sm px-4">
-            Send
+          <button onClick={sendMessage} className="btn btn-primary btn-circle">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className="w-5 h-5"
+            >
+              <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
+            </svg>
           </button>
         </div>
       </div>

@@ -33,44 +33,69 @@ const UserCard = ({ user, handleClick = () => {}, loading }) => {
   }
 
   return (
-    <div key={user?._id} className="card bg-base-200 w-96 shadow-sm  ">
-      <figure className="h-100 w-full overflow-hidden">
-        <img
-          src={
-            getHighResGoogleProfile(profileUrl) ||
-            "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
-          }
-          alt="profile image"
-          className="h-full w-full object-cover object-center"
-        />
-      </figure>
-      <div className="card-body">
-        <h2 className="card-title">
-          {firstName + " " + lastName}
-          <div className="tooltip cursor-pointer" data-tip="premium user">
-            {isPremium && (
-              <span>
-                {" "}
-                <Star fill="yellow" size={16} />
-              </span>
-            )}
-          </div>
-        </h2>
-        <p>{about}</p>
-        {age && gender && <p>{age + ", " + gender}</p>}
+    <div
+      key={user?._id}
+      className="group relative w-full max-w-sm aspect-[3/4] rounded-[2rem] overflow-hidden shadow-2xl bg-base-300 mx-auto border-4 border-base-100 transition-all hover:scale-[1.01]"
+    >
+      {/* BACKGROUND IMAGE */}
+      <img
+        src={
+          getHighResGoogleProfile(profileUrl) ||
+          "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
+        }
+        alt="profile"
+        className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+      />
 
-        <div className="card-actions justify-between mt-5">
+      {/* SMART GRADIENT OVERLAY (Protects text readability) */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+
+      {/* TOP BADGE: PREMIUM STATUS */}
+      {isPremium && (
+        <div className="absolute top-4 right-4 z-20">
+          <div className="badge badge-primary font-black gap-1 shadow-lg py-3 px-4 rounded-full">
+            <Star size={14} fill="currentColor" /> PRO
+          </div>
+        </div>
+      )}
+
+      {/* BOTTOM CONTENT AREA */}
+      <div className="absolute bottom-0 w-full p-6 flex flex-col gap-3">
+        {/* INFO SECTION */}
+        <div className="text-white">
+          <h2 className="text-3xl font-black tracking-tighter flex items-baseline gap-2">
+            {firstName}{" "}
+            <span className="text-xl font-medium opacity-80">{age}</span>
+          </h2>
+          <p className="text-sm opacity-90 line-clamp-2 mt-1 font-medium leading-tight max-w-[90%]">
+            {about || "Ready to ship code."}
+          </p>
+        </div>
+
+        {/* COMPACT ACTION BUTTONS */}
+        <div className="flex gap-3 mt-2">
           <button
-            className="btn btn-outline btn-error w-28"
+            disabled={ignoredLoading}
             onClick={() => handleClick("ignored", _id)}
+            className="btn flex-1 bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-error hover:border-error transition-all rounded-2xl h-14"
           >
-            {ignoredLoading ? <Loader /> : "Reject"}
+            {ignoredLoading ? (
+              <span className="loading loading-spinner loading-sm" />
+            ) : (
+              "Skip"
+            )}
           </button>
+
           <button
-            className="btn  btn-info w-28 "
+            disabled={interestedLoading}
             onClick={() => handleClick("interested", _id)}
+            className="btn flex-[1.5] btn-primary border-none shadow-xl rounded-2xl h-14 text-lg font-black italic"
           >
-            {interestedLoading ? <Loader /> : "Commit"}
+            {interestedLoading ? (
+              <span className="loading loading-spinner loading-sm" />
+            ) : (
+              "Commit"
+            )}
           </button>
         </div>
       </div>
