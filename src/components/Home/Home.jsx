@@ -5,7 +5,7 @@ import Footer from "../Footer";
 const HeroSection = lazy(() => import("./HeroSection"));
 const SectionWhy = lazy(() => import("./SectionWhy"));
 const SectionHow = lazy(() => import("./SectionHow"));
-const SectionStack = lazy(() => import("./SectionStack"));
+// const SectionStack = lazy(() => import("./SectionStack"));
 const SectionCta = lazy(() => import("./SectionCta"));
 const ShimmerSection = lazy(() => import("./ShimmerUi"));
 const HomeHeader = lazy(() => import("./HomeHeader"));
@@ -35,9 +35,9 @@ const Home = () => {
       </Suspense>
 
       {/* Tech Stack */}
-      <Suspense fallback={<ShimmerSection height="h-96" />}>
+      {/* <Suspense fallback={<ShimmerSection height="h-96" />}>
         <SectionStack />
-      </Suspense>
+      </Suspense> */}
 
       {/* Final CTA */}
       <Suspense fallback={<ShimmerSection height="h-96" />}>
