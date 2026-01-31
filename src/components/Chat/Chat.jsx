@@ -54,16 +54,16 @@ const Chat = () => {
     loadChatData();
   }, [loadChatData]);
 
-  // Socket Lifecycle - Cleaned up
+  
   useEffect(() => {
     if (!userId || !toUserId) return;
 
     socketRef.current = createSocketConnection();
     const socket = socketRef.current;
 
-    socket.emit("joinChat", { userId, toUserId });
+    socket.emit("joinChat", { userId, toUserId });//creates the room when chat is open
 
-    socket.on("messageSentAck", ({ _id, status, text }) => {
+    socket.on("messageSentAck", ({ _id, status, text }) => { //listen to messagesent acknowledge
       setMessages((prev) =>
         prev.map((msg) =>
           msg.status === "sent" && msg.text === text
@@ -73,7 +73,7 @@ const Chat = () => {
       );
     });
 
-    socket.on("messageReceived", (msg) => {
+    socket.on("messageReceived", (msg) => { //listen to incoming message
       if (msg.senderId !== userId) {
         setMessages((prev) => [...prev, { ...msg, status: "received" }]);
         socket.emit("markAsSeen", {
@@ -186,5 +186,5 @@ const Chat = () => {
     </div>
   );
 };
-
+//:TODO - need to add typing... when user start typing
 export default Chat;

@@ -46,7 +46,9 @@ const Subscription = () => {
         currency: currency,
         name: "GitTogether",
         description: "Test Transaction",
-        image: "https://example.com/your_logo",
+        // image: "https://example.com/your_logo",
+        image:
+          "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiM1NTk5Y2MiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJtNyA4LTQgNCA0IDQiIC8+PHBhdGggZD0ibTE3IDggNCA0LTQgNCIgLz48cGF0aCBkPSJNMTQgNGwtNCAxNiIgLz48L3N2Zz4=",
         order_id: id,
 
         prefill: {

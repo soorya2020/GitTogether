@@ -5,7 +5,7 @@ import { addUser } from "../store/userSlice";
 import { Link, useNavigate } from "react-router";
 import GoogleButton from "./GoogleButton";
 import { API } from "../utils/axios";
-
+import { LogIn } from "lucide-react"; // Standard Lucide icon
 import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
@@ -19,15 +19,15 @@ const Login = () => {
   const navigate = useNavigate();
   const user = useSelector((store) => store.userReducer.user);
 
-
   const googleButtonRef = useRef(null);
 
   useEffect(() => {
-    //cannot access login if user already exist
+    // If user exists and has an ID, they are logged in.
+    // Send them away from the Login page.
     if (user) {
       navigate("/feeds");
     }
-  }, []);
+  }, [user, navigate]);
 
   const handleAuth = async () => {
     try {
@@ -154,18 +154,29 @@ const Login = () => {
           </p>
 
           <div className="mt-6">
-            <button className="btn btn-primary btn-block" onClick={handleAuth}>
+            <button
+              className="btn btn-primary btn-block    "
+              onClick={handleAuth}
+            >
               {isLogin ? "Login" : "Sign Up"}
             </button>
 
-            <div>
-              {/* Hidden Google Login button */}
-              <div className="mt-5 ">
+            <div className="relative mt-5">
+              {/* 1. Your Custom Button (The one users see) */}
+              <button className="w-full py-3 px-4 bg-blue-600 text-white rounded-md flex items-center justify-center gap-2">
+                <span className="flex items-center justify-center w-5 h-5 font-bold text-blue-500 border border-blue-500 rounded-sm text-xs">
+                  G
+                </span>
+                {isLogin ? "Sign in with Google" : "Sign up with Google"}
+                <LogIn size={18} className="ml-auto text-gray-400" />
+              </button>
+
+              {/* 2. The Real Google Button (Hidden but clickable) */}
+              <div className="absolute top-0 left-0 w-full h-full opacity-0 overflow-hidden cursor-pointer">
                 <GoogleLogin
                   theme="outline"
-                  width={"100%"}
+                  width="400px" // Set this wide enough to cover your custom button
                   text={isLogin ? "signin_with" : "signup_with"}
-                  logo_alignment="center"
                   onSuccess={handleGoogleLogin}
                   onError={() => console.log("Google login failed")}
                 />

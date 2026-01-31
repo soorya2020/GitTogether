@@ -17,13 +17,18 @@ function NavBar() {
 
   const handleLogOut = async () => {
     try {
-      const response = await API.post("/logout");
-      alert(response.data.message);
-      navigate("/login");
+      await API.post("/logout");
+
       dispatch(removeUser());
       dispatch(clearFeeds());
       dispatch(clearRequests());
       dispatch(clearConnections());
+
+      localStorage.clear();
+
+      navigate("/login", { replace: true });
+
+      alert("Logged out successfully");
     } catch (error) {
       console.error(error);
     }
@@ -31,7 +36,6 @@ function NavBar() {
 
   return (
     <div className="navbar bg-base-300 shadow-sm px-4 md:px-8 justify-between pt-4">
-     
       {/* LEFT: Logo */}
       <div className="flex-none">
         <Link to="/" className="btn btn-ghost text-lg md:text-xl">
